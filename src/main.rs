@@ -16,7 +16,7 @@ pub struct Env {
     pub vars: Vec<(String, String)>,
 }
 
-fn main() {
+fn main() -> Result<(), anyhow::Error> {
     let args = Args::parse();
 
     let runtime_dir = match std::env::var("XDG_RUNTIME_DIR") {
@@ -30,9 +30,11 @@ fn main() {
     protonhax_dir.push("protonhax-rs");
 
     match args.command {
-        Command::Init { command } => init(protonhax_dir, command),
-        Command::Run { appid, command } => run(protonhax_dir, appid, command),
-        Command::Ls => ls(protonhax_dir),
+        Command::Init { command } => init(protonhax_dir, command)?,
+        Command::Run { appid, command } => run(protonhax_dir, appid, command)?,
+        Command::Ls => ls(protonhax_dir)?,
         _ => todo!(),
     }
+
+    Ok(())
 }
