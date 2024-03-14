@@ -25,6 +25,7 @@ fn main() {
 
     match args.command {
         Command::Init { command } => init(protonhax_dir, &command),
+        Command::Ls => ls(protonhax_dir),
         _ => todo!(),
     }
 }
@@ -95,4 +96,15 @@ fn init(mut protonhax_dir: PathBuf, command: &[String]) {
     // cleanup
     std::fs::remove_dir_all(protonhax_dir).expect("unable to delete protonhax dir");
     std::process::exit(code);
+}
+
+fn ls(protonhax_dir: PathBuf) {
+    if let Ok(entries) = std::fs::read_dir(&protonhax_dir) {
+        for entry in entries {
+            let entry = entry.unwrap();
+            if entry.metadata().unwrap().is_dir() {
+                println!("{}", entry.path().display());
+            }
+        }
+    }
 }
