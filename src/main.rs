@@ -32,6 +32,7 @@ fn main() -> Result<(), anyhow::Error> {
     match args.command {
         Command::Init { command } => init(protonhax_dir, command)?,
         Command::Run { appid, command } => run(protonhax_dir, appid, command)?,
+        Command::Cmd { appid } => cmd(protonhax_dir, appid)?,
         Command::Ls => ls(protonhax_dir)?,
         _ => todo!(),
     }

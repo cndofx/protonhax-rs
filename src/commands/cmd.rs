@@ -8,11 +8,7 @@ use serde::Deserialize;
 
 use crate::Env;
 
-pub fn run(
-    mut protonhax_dir: PathBuf,
-    appid: u32,
-    mut command: Vec<String>,
-) -> Result<(), anyhow::Error> {
+pub fn cmd(mut protonhax_dir: PathBuf, appid: u32) -> Result<(), anyhow::Error> {
     protonhax_dir.push(appid.to_string());
 
     // read the environment file
@@ -32,9 +28,20 @@ pub fn run(
     let mut proton_exe = String::new();
     exe_file.read_to_string(&mut proton_exe)?;
 
+    // read proton prefix file
+    protonhax_dir.pop();
+    protonhax_dir.push("pfx");
+    let mut pfx_file = std::fs::File::open(&protonhax_dir)?;
+    let mut proton_pfx = String::new();
+    pfx_file.read_to_string(&mut proton_pfx)?;
+
     // execute command
+    let cmd_path = format!("{proton_pfx}/drive_c/windows/system32/cmd.exe");
+    dbg!(&proton_pfx);
+    dbg!(&cmd_path);
+
     let mut cmd = vec!["run".to_owned()];
-    cmd.append(&mut command);
+    cmd.push(cmd_path);
     let status = Command::new(proton_exe)
         .args(cmd)
         .envs(env.vars)
