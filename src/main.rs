@@ -10,6 +10,7 @@ use crate::commands::*;
 
 mod args;
 mod commands;
+mod state;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Env {
@@ -30,12 +31,11 @@ fn main() -> Result<(), anyhow::Error> {
     protonhax_dir.push("protonhax-rs");
 
     match args.command {
-        Command::Init { command } => init(protonhax_dir, command)?,
-        Command::Run { appid, command } => run(protonhax_dir, appid, command)?,
-        Command::Exec { appid, command } => exec(protonhax_dir, appid, command)?,
-        Command::Cmd { appid } => cmd(protonhax_dir, appid)?,
-        Command::Ls => ls(protonhax_dir)?,
-        _ => todo!(),
+        Command::Init { command } => init(command)?,
+        Command::Run { appid, command } => run(appid, command)?,
+        Command::Exec { appid, command } => exec(appid, command)?,
+        Command::Cmd { appid } => cmd(appid)?,
+        Command::Ls => ls()?,
     }
 
     Ok(())

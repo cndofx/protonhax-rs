@@ -1,7 +1,9 @@
-use std::path::PathBuf;
+use crate::state::State;
 
-pub fn ls(protonhax_dir: PathBuf) -> Result<(), anyhow::Error> {
-    if let Ok(entries) = std::fs::read_dir(&protonhax_dir) {
+pub fn ls() -> Result<(), anyhow::Error> {
+    let dir = State::base_dir()?;
+
+    if let Ok(entries) = std::fs::read_dir(&dir) {
         for entry in entries {
             let entry = entry?;
             if entry.metadata()?.is_dir() {
@@ -9,5 +11,6 @@ pub fn ls(protonhax_dir: PathBuf) -> Result<(), anyhow::Error> {
             }
         }
     }
+
     Ok(())
 }
