@@ -9,11 +9,22 @@ pub struct Args {
 #[derive(Subcommand)]
 pub enum Command {
     /// Should only be called by Steam with "protonhax init %command%"
-    Init { command: Vec<String> },
+    Init {
+        #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
+        command: Vec<String>,
+    },
     /// Runs a command in the context of the given appid with proton
-    Run { appid: u32, command: Vec<String> },
+    Run {
+        appid: u32,
+        #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
+        command: Vec<String>,
+    },
     /// Runs a command in the context of the given appid
-    Exec { appid: u32, command: Vec<String> },
+    Exec {
+        appid: u32,
+        #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
+        command: Vec<String>,
+    },
     /// Runs cmd.exe in the context of the given appid
     Cmd { appid: u32 },
     /// Lists all currently running games
